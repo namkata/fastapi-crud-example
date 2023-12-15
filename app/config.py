@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import BaseSettings
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,10 +24,9 @@ class Settings(BaseSettings):
 
     CLIENT_ORIGIN: str
 
-    model_config = SettingsConfigDict(
-        env_file=ENV_PATH,
-        env_file_encoding="utf-8",
-    )
+    class Config:
+        env_file = ENV_PATH
+        env_file_encoding = "utf-8"
 
 
 settings = Settings()

@@ -1,64 +1,55 @@
 import uuid
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel, EmailStr, constr
 
 
-class UserBaseSchema(BaseModel):
+class UserBase(BaseModel):
     name: str
     email: EmailStr
     photo: str
 
 
-class CreateUserSchema(UserBaseSchema):
+class CreateUser(UserBase):
     password: constr(min_length=8)
     passwordConfirm: str
     role: str = "user"
     verified: bool = False
 
 
-class LoginUserSchema(BaseModel):
+class LoginUser(BaseModel):
     email: EmailStr
     password: constr(min_length=8)
 
 
-class UserResponse(UserBaseSchema):
+class UserResponse(UserBase):
     id: uuid.UUID
     created_at: datetime
     updated_at: datetime
 
 
-class FilteredUserResponse(UserBaseSchema):
+class FilteredUserResponse(UserBase):
     id: uuid.UUID
 
 
-class PostBaseSchema(BaseModel):
+class PostBase(BaseModel):
     title: str
     content: str
     category: str
     image: str
-    user_id: uuid.UUID | None = None
+    user_id: Optional[uuid.UUID] = None
 
 
-class CreatePostSchema(PostBaseSchema):
-    pass
-
-
-class PostResponse(PostBaseSchema):
+class PostResponse(PostBase):
     id: uuid.UUID
     user: FilteredUserResponse
     created_at: datetime
     updated_at: datetime
 
 
-class UpdatePostSchema(BaseModel):
-    title: str
-    content: str
-    category: str
-    image: str
-    user_id: uuid.UUID | None = None
-    created_at: datetime | None = None
-    updated_at: datetime | None = None
+class UpdatePost(PostBase):
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
 
 class ListPostResponse(BaseModel):

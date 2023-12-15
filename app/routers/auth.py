@@ -19,7 +19,7 @@ REFRESH_TOKEN_EXPIRES_IN = settings.REFRESH_TOKEN_EXPIRES_IN
     status_code=status.HTTP_201_CREATED,
     response_model=schemas.UserResponse,
 )
-async def create_user(payload: schemas.CreateUserSchema, db: Session = Depends(get_db)):
+async def create_user(payload: schemas.CreateUser, db: Session = Depends(get_db)):
     # sourcery skip: use-named-expression
     # Check if user already exist
     user = (
@@ -52,7 +52,7 @@ async def create_user(payload: schemas.CreateUserSchema, db: Session = Depends(g
 # Login User
 @router.post("/login")
 def login(
-    payload: schemas.LoginUserSchema,
+    payload: schemas.LoginUser,
     response: Response,
     db: Session = Depends(get_db),
     Authorize: AuthJWT = Depends(),
